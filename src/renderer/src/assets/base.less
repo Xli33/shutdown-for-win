@@ -1,0 +1,41 @@
+body {
+  &.body--dark {
+    color-scheme: dark;
+  }
+  &.electron {
+    .q-notifications__list--top {
+      top: 32px;
+    }
+  }
+}
+
+@flip: flip-;
+
+.@{flip} {
+  &enter-active,
+  &leave-active {
+    transition: transform 0.3s ease-out;
+  }
+
+  &enter-from,
+  &leave-to {
+    transform: rotateX(90deg);
+  }
+}
+
+:lang(en) .colon::after {
+  content: ':';
+  margin-right: 4px;
+  margin-left: 2px;
+}
+
+:lang(zh) .colon::after {
+  content: '\FF1A';
+  margin-right: 0;
+  margin-left: 0;
+}
+
+// override quasar
+.q-notifications {
+  word-break: break-word;
+}

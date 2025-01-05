@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" /> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src 'self' 'unsafe-inline'"
+    />
+    <!-- <link rel="icon" href="/favicon.ico" /> -->
+    <title>shutdown for win</title>
+    <link href="backup/Material.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="backup/quasar.2.17.3.css" />
+    <script
+      src="backup/<%= process.env.NODE_ENV === 'production' ? 'vue.3.5.13' : 'vue.3.5.13.dev' %>.js"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="backup/vue-router.4.4.5.js" referrerpolicy="no-referrer"></script>
+    <script>
+      // ;(() => {
+      //   const doc = document,
+      //     path = 'backup/',
+      //     links = [
+      //       ['link-mdi', 'Material.css'],
+      //       ['link-quasar', 'quasar.2.17.3.css']
+      //     ],
+      //     genLink = (name) => {
+      //       const link = doc.createElement('link')
+      //       link.href = path + name
+      //       link.rel = 'stylesheet'
+      //       doc.head.appendChild(link)
+      //     }
+      //   links.forEach((e) => {
+      //     const el = doc.getElementById(e[0])
+      //     el.onload = () => {
+      //       el.onerror = null
+      //     }
+      //     el.onerror = () => {
+      //       genLink(e[1])
+      //     }
+      //   })
+      //   ;[
+      //     ['Vue', 'vue.3.5.13'],
+      //     ['VueRouter', 'vue-router.4.4.5']
+      //   ].forEach((e) => {
+      //     !window[e[0]] && document.write('<script src="' + path + e[1] + '.js"><\/script>')
+      //   })
+      // })()
+      ;(() => {
+        const arr = location.hash.match(/\w+=[^&]*/g)
+        if (!arr) return (_HASHQUERY = {})
+        _HASHQUERY = arr.reduce(
+          (a, b) =>
+            Object.assign(
+              a,
+              b.split('=').reduce((k, v) => ({ [k]: v }))
+            ),
+          {}
+        )
+        if (_HASHQUERY.lang) {
+          document.documentElement.lang = _HASHQUERY.lang
+        }
+      })()
+    </script>
+  </head>
+
+  <body>
+    <div id="app"></div>
+    <script>
+      window.electronAPI && document.body.classList.add('electron')
+    </script>
+    <script src="backup/quasar.2.17.3.js"></script>
+    <!-- <script>
+      !window.Quasar && document.write('<script src="backup/quasar.2.17.3.js"><\/script>')
+    </script> -->
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
