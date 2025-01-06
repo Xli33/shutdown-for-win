@@ -22,19 +22,6 @@ jobs:
       - name: Check out Git repository
         uses: actions/checkout@v4
           
-      - name: release
-        uses: softprops/action-gh-release@v2
-        with:
-          # tag_name: ${{ env.VERSION }}
-          # name: v${{ env.VERSION }}
-          draft: true
-          prerelease: false
-          files: |
-            dist/*.7z
-            dist/*.zip
-        # env:
-          # token: ${{ secrets.OWN_TOKEN }}
-          
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
@@ -55,3 +42,16 @@ jobs:
       - name: build-win
         if: matrix.os == 'windows-latest'
         run: npm run build:win
+          
+      - name: release
+        uses: softprops/action-gh-release@v2
+        with:
+          # tag_name: ${{ env.VERSION }}
+          # name: v${{ env.VERSION }}
+          draft: true
+          prerelease: false
+          files: |
+            dist/*.7z
+            dist/*.zip
+        # env:
+          # token: ${{ secrets.OWN_TOKEN }}
