@@ -41,7 +41,7 @@ jobs:
 
       - name: build-win
         if: matrix.os == 'windows-latest'
-        run: npm run build
+        run: npm run build:win
 
       - name: release
         uses: softprops/action-gh-release@v2
@@ -54,4 +54,4 @@ jobs:
             dist/*.7z
             dist/*.zip
         # env:
-          # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.OWN_TOKEN }}
