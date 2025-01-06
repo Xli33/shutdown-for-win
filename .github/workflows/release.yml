@@ -42,16 +42,16 @@ jobs:
 
       - name: get version
         run: |
-          VERSION=$(node -p "require('./package.json').version" || echo "v0.0.1")
+          VERSION=$(node -p "require('./package.json').version")
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
           echo "New version:${VERSION}"
 
       - name: release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ env.VERSION }}
-          name: v${{ env.VERSION }}
-          draft: false
+          # tag_name: ${{ env.VERSION }}
+          # name: v${{ env.VERSION }}
+          draft: true
           prerelease: false
           files: |
             dist/*.7z
