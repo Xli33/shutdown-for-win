@@ -56,5 +56,5 @@ jobs:
           files: |
             dist/*.7z
             dist/*.zip
-        env:
+        # env:
           # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
