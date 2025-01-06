@@ -23,14 +23,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          name: v${{ env.VERSION }}
           # cache: npm
-          
-      - name: get version
-        run: |
-          VERSION=$(echo '1.2.3')
-          echo "VERSION=${VERSION}" >> $GITHUB_ENV
-          echo "New version:${VERSION}"
 
       - name: Install Dependencies
         run: yarn
@@ -45,7 +38,7 @@ jobs:
 
       - name: build-win
         if: matrix.os == 'windows-latest'
-        run: npm run build:win
+        run: npm run build
 
       - name: release
         uses: softprops/action-gh-release@v2
