@@ -6,8 +6,8 @@ on:
       - v*.*.*
   workflow_dispatch:
   
-permissions:
-  contents: write
+# permissions:
+  # contents: write
 
 jobs:
   release:
@@ -21,8 +21,6 @@ jobs:
     steps:          
       - name: Check out Git repository
         uses: actions/checkout@v4
-        with:
-          tag: 'v0.0.1'
           
       - name: release
         uses: softprops/action-gh-release@v2
