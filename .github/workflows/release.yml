@@ -18,7 +18,12 @@ jobs:
         # ubuntu-latest, macos-latest,
         os: [windows-latest]
 
-    steps:
+    steps:          
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+        with:
+          tag: 'v0.0.1'
+          
       - name: release
         uses: softprops/action-gh-release@v2
         with:
@@ -31,9 +36,6 @@ jobs:
             dist/*.zip
         # env:
           # token: ${{ secrets.OWN_TOKEN }}
-          
-      - name: Check out Git repository
-        uses: actions/checkout@v4
           
       - name: Install Node.js
         uses: actions/setup-node@v4
