@@ -30,3 +30,5 @@ coverage
 *.tsbuildinfo
 
 out/
+package-lock.json
+*.lock
