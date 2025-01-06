@@ -54,4 +54,4 @@ jobs:
             dist/*.7z
             dist/*.zip
         # env:
-          GITHUB_TOKEN: ${{ secrets.OWN_TOKEN }}
+          # token: ${{ secrets.OWN_TOKEN }}
