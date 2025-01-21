@@ -91,7 +91,7 @@
 <script setup lang="ts">
 import { computed, getCurrentInstance, onBeforeUnmount, onMounted, reactive, ref } from 'vue'
 import { Notify, date } from 'quasar'
-import { CountDown } from 'utils-where'
+import { Countdown } from 'utils-where'
 import { globalEmitter, useUserStore } from '@/store'
 
 const { $t } = getCurrentInstance()!.appContext.config.globalProperties
@@ -139,7 +139,7 @@ const countDown = reactive({
   minute: 0,
   second: 0
 })
-const counter = new CountDown({ second: getLeftTime() }, false, ({ day, hour, minute, second }) => {
+const counter = new Countdown({ second: getLeftTime() }, true, ({ day, hour, minute, second }) => {
   countDown.day = day
   countDown.hour = hour
   countDown.minute = minute
