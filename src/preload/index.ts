@@ -30,7 +30,14 @@ contextBridge.exposeInMainWorld('electronAPI', {
     ipcRenderer.send('toggleMaximize')
   },
   // 设置定时关机，second < 0时直接取消定时
-  setShutdown: (second: number) => ipcRenderer.invoke('setShutdown', second)
+  setShutdown: (second: number) => ipcRenderer.invoke('setShutdown', second),
+  // 尝试调用默认浏览器打开url
+  open: (url: string) => ipcRenderer.send('openUrl', url),
+  // update
+  updatePkg: (file: File) => ipcRenderer.invoke('updatePkg', file),
+  restart() {
+    ipcRenderer.send('restart')
+  }
 })
 
 ipcRenderer.on('maximize', () => {
@@ -39,6 +46,9 @@ ipcRenderer.on('maximize', () => {
 ipcRenderer.on('unmaximize', () => {
   window.dispatchEvent(new Event('unmaximize'))
 })
+// ipcRenderer.once('getVer', (e, version: string) => {
+//   contextBridge.exposeInMainWorld('ver', version)
+// })
 
 window.addEventListener('DOMContentLoaded', () => {
   console.log(process)

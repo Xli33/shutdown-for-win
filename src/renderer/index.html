@@ -9,7 +9,7 @@
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src 'self' 'unsafe-inline'"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src 'self' 'unsafe-inline'; connect-src 'self' https://raw.githubusercontent.com/Xli33/ https://github.com/Xli33/ https://objects.githubusercontent.com;"
     />
     <!-- <link rel="icon" href="/favicon.ico" /> -->
     <title>shutdown for win</title>
@@ -52,6 +52,7 @@
       // })()
       ;(() => {
         const arr = location.hash.match(/\w+=[^&]*/g)
+        ver = navigator.appVersion.match(/shutdown-for-win\/([\d\.]+)/)[1]
         if (!arr) return (_HASHQUERY = {})
         _HASHQUERY = arr.reduce(
           (a, b) =>

@@ -22,7 +22,7 @@
         <span class="vertical-middle">{{ $t('Home.配置') }}</span>
       </div>
       <!-- drawer content -->
-      <q-scroll-area style="height: calc(100% - 72px)">
+      <q-scroll-area style="height: calc(100% - 104px)">
         <q-list class="q-pb-md">
           <q-item v-for="(item, index) in User.custom.plans" :key="index" v-ripple clickable>
             <q-item-section>
@@ -55,6 +55,21 @@
           </q-item>
         </q-list>
       </q-scroll-area>
+      <div class="q-pa-xs text-center">
+        <a
+          href="https://github.com/Xli33/shutdown-for-win#readme"
+          class="relative-position q-mr-xs"
+          open-external
+          >关于</a
+        >
+        <q-badge outline color="primary">v{{ ver }}</q-badge>
+        <q-btn flat dense padding="0 xs" :loading="checking" class="q-ml-md" @click="checkUpdate"
+          >检查更新
+          <template #loading>
+            <q-spinner size="xs"></q-spinner>
+          </template>
+        </q-btn>
+      </div>
     </q-drawer>
 
     <q-page-container>
@@ -64,11 +79,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { getCurrentInstance, onMounted, ref, watch } from 'vue'
 import { Dark } from 'quasar'
 import { globalEmitter, useUserStore } from './store'
 import { useLangStore } from './store'
 
+const { notify } = getCurrentInstance()!.appContext.config.globalProperties
 const User = useUserStore()
 const Language = useLangStore()
 
@@ -82,7 +98,8 @@ if (Language.locale !== settedLang) {
 // 设置主题模式
 Dark.set(User.custom.theme)
 
-const leftDrawerOpen = ref(true)
+const leftDrawerOpen = ref(true),
+  checking = ref(false)
 
 // methods
 
@@ -106,4 +123,162 @@ const usePlan = (item: (typeof User.custom.plans)[number]) => {
   leftDrawerOpen.value = false
   globalEmitter.emit('setShutTime', item)
 }
+
+const compareVerion = (left: string, right: string) => {
+  const leftVer = left.split('.'),
+    rightVer = right.split('.')
+  const dis = rightVer.length - leftVer.length
+  if (dis > 0) {
+    leftVer.push(...'0'.repeat(dis))
+  }
+  console.log(leftVer.join('.'), rightVer.join('.'))
+  for (let i = 0, len = leftVer.length; i < len; i++) {
+    if (+leftVer[i] > +rightVer[i]) return 1
+    if (+leftVer[i] < +rightVer[i]) return -1
+  }
+  // 进入到这表示版本号相同
+  return 0
+}
+
+const checkUpdate = () => {
+  checking.value = true
+  fetch('https://raw.githubusercontent.com/Xli33/shutdown-for-win/refs/heads/main/package.json')
+    .then(async (res) => {
+      checking.value = false
+      if (res.ok) {
+        const json = await res.json()
+        if (compareVerion(json.version, window.ver) <= 0) {
+          notify({
+            message: '当前已是最新版本'
+          })
+          return
+        }
+        const updateInfo = notify({
+          group: false,
+          type: 'info',
+          timeout: 0,
+          message: '当前有新版本：' + json.version,
+          actions: [
+            {
+              label: '更新',
+              color: 'white',
+              noDismiss: true,
+              handler: () => {
+                updateInfo(
+                  {
+                    spinner: true,
+                    message: 'updating...',
+                    caption: 0 + '%',
+                    actions: []
+                  },
+                  false
+                )
+                fetch(
+                  // `https://github.com/Xli33/shutdown-for-win/releases/download/v${json.version}/ShutdownForWin-${json.version}-win.7z`
+                  `https://github.com/Xli33/shutdown-for-win/releases/download/v${json.version}/app.zip`
+                )
+                  .then(async (res) => {
+                    if (res.ok) {
+                      // 通过 content-length 得到总量
+                      const total = +res.headers.get('content-length')!
+                      const reader = res.clone().body!.getReader()
+                      let loaded = 0
+                      while (1) {
+                        const { value, done } = await reader.read()
+                        if (done) break
+                        // 每一次读取都累加起来
+                        loaded += value.length
+                        updateInfo({
+                          message: 'downloading...',
+                          caption: Math.floor((loaded / total) * 100) + '%'
+                        })
+                      }
+                      updateInfo({
+                        message: 'installing...'
+                      })
+                      window.electronAPI
+                        .updatePkg(
+                          await res.arrayBuffer()
+                          // new File(
+                          //   [await res.arrayBuffer()],
+                          //   res.headers.get('content-disposition')!.match('filename=(.+)')?.[1] ||
+                          //     'update.zip',
+                          //   {
+                          //     type: 'application/zip'
+                          //   }
+                          // )
+                        )
+                        .then(() => {
+                          updateInfo(
+                            {
+                              type: 'positive',
+                              spinner: false,
+                              message: '更新成功，重启后生效',
+                              caption: '',
+                              actions: [
+                                {
+                                  label: '重启界面',
+                                  color: '#fff',
+                                  handler() {
+                                    location.reload()
+                                  }
+                                },
+                                {
+                                  label: '重启应用',
+                                  color: '#fff',
+                                  handler() {
+                                    window.electronAPI.restart()
+                                  }
+                                }
+                              ]
+                            },
+                            true
+                          )
+                        })
+                        .catch((err) => {
+                          notify({
+                            type: 'warning',
+                            message: err
+                          })
+                        })
+                    }
+                  })
+                  .catch((err) => {
+                    updateInfo()
+                    notify({
+                      type: 'negative',
+                      message: err
+                    })
+                  })
+              }
+            }
+          ]
+        })
+      }
+    })
+    .catch((err) => {
+      checking.value = false
+      notify({
+        type: 'negative',
+        message: err
+      })
+    })
+}
+
+watch(
+  () => Dark.isActive,
+  (val) => {
+    document.documentElement.classList[val ? 'add' : 'remove']('dark')
+  }
+)
+
+onMounted(() => {
+  document.onclick = (e) => {
+    const el = e.target as HTMLAnchorElement
+    if (el.hasAttribute('open-external')) {
+      e.preventDefault()
+      window.electronAPI.open(el.href)
+    }
+  }
+})
 </script>

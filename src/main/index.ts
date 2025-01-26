@@ -1,7 +1,9 @@
 // Modules to control application life and create native browser window
-import { app, BrowserWindow, ipcMain } from 'electron'
+import { app, BrowserWindow, ipcMain, shell } from 'electron'
 import { exec } from 'node:child_process'
 import path from 'node:path'
+import admZip from 'adm-zip'
+import { rm } from 'node:fs/promises'
 // import { fileURLToPath } from 'node:url'
 
 // const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -17,18 +19,23 @@ const createWindow = () => {
     width: 600,
     height: 600,
     frame: false,
+    show: false,
     resizable: false,
     maximizable: false, // 禁用最大化后，app-region: drag 的元素也会无法通过双击最大化。但若应用已经最大化，则依旧可以通过双击退出最大化
+    // backgroundMaterial: 'acrylic',
+    // backgroundColor: '#1976d2',
     webPreferences: {
+      webSecurity: process.env.NODE_ENV !== 'development',
+      allowRunningInsecureContent: false,
       // backgroundThrottling: false,
       preload: path.join(__dirname, '../preload/index.cjs')
       // sandbox: false
     }
   })
 
-  // win.once('ready-to-show', () => {
-  //   win.show()
-  // })
+  win.once('ready-to-show', () => {
+    win.show()
+  })
 
   // 加载 index.html
   // You can use `process.env.VITE_DEV_SERVER_URL` when the vite command is called `serve`
@@ -36,9 +43,13 @@ const createWindow = () => {
     win.loadURL(process.env.ELECTRON_RENDERER_URL)
   } else {
     // Load your file
-    win.loadFile('out/renderer/index.html')
+    win.loadFile('out/renderer/index.html', {
+      hash: '#/home'
+    })
   }
-
+  // win.webContents.once('did-start-loading', () => {
+  //   win.webContents.send('getVer', app.getVersion())
+  // })
   // 切换最大化后通知页面
   win.on('maximize', () => {
     win.webContents.send('maximize')
@@ -53,12 +64,17 @@ const createWindow = () => {
   }
 }
 
+// Menu.setApplicationMenu(null)
 // 这段程序将会在 Electron 结束初始化
 // 和创建浏览器窗口的时候调用
 // 部分 API 在 ready 事件触发后才能使用。
 app.whenReady().then(() => {
   createWindow()
 
+  ipcMain.once('restart', () => {
+    app.relaunch()
+    app.exit()
+  })
   ipcMain.on('minimize', () => {
     // 若有多个 窗口 时，通过 e.sender 获取对应的窗口
     // BrowserWindow.fromWebContents(e.sender)?.minimize()
@@ -89,12 +105,36 @@ app.whenReady().then(() => {
         }
       })
   )
+  // update
+  ipcMain.handle(
+    'updatePkg',
+    (e, file: ArrayBuffer) =>
+      new Promise<void>((resolve, reject) => {
+        // console.log('to update:', file, file + '', new File([file], 'a.txt'))
+        // writeFileSync('./app-new/123.zip', file)
+        const zip = new admZip(Buffer.from(file))
+        console.log(JSON.stringify(zip.getEntry('app/package.json'), null, 2))
+        rm('./resources/app', {
+          force: true,
+          recursive: true
+        })
+          .then(() => {
+            zip.extractAllTo('./resources/', true)
+            resolve()
+          })
+          .catch((err) => {
+            reject(err)
+          })
+      })
+  )
   // ipcMain.on('setShutdown', (e, second: number) => {
   //   exec('shutdown -a')
   //   exec(`shutdown -s -f -t ${second}`, (err) => {
   //     win!.webContents.send('changedShutdown', err)
   //   })
   // })
+  // open url
+  ipcMain.on('openUrl', (e, url: string) => shell.openExternal(url))
 
   app.on('activate', () => {
     // 在 macOS 系统内, 如果没有已开启的应用窗口

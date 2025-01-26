@@ -71,7 +71,12 @@ export const useLangStore = defineStore('locale', {
         Notify.create({
           type: 'warning',
           caption: 'failed to fetch the locale: ' + lang,
-          message: err
+          message: err,
+          actions: [
+            {
+              icon: 'close'
+            }
+          ]
         })
         return false
       })

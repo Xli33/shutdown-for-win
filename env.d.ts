@@ -20,6 +20,7 @@ declare interface Window {
   //   send(channel: string, ...args): void
   //   invoke(channel: string, ...args): Promise<any>
   // }
+  ver: string
   electronAPI: {
     minimize(): void
     maximize(): void
@@ -28,6 +29,10 @@ declare interface Window {
      * @param second 大于0则设置定时关机，小于0直接取消定时
      */
     setShutdown(second: number): Promise<any>
+    open(url: string): void
+    // update package
+    updatePkg(file: ArrayBuffer): Promise<void>
+    restart(): void
   }
   /**
    * 用于在modal切换后调整Bar的app-region
