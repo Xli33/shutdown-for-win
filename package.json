@@ -1,6 +1,6 @@
 {
   "name": "shutdown-for-win",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "shutdown for win",
   "private": true,
   "type": "module",
