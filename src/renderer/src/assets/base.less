@@ -1,3 +1,18 @@
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+  background-color: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #aaa;
+  border-radius: 5px;
+}
+:root.dark {
+  ::-webkit-scrollbar-thumb {
+    background-color: #666;
+  }
+}
+
 body {
   &.body--dark {
     color-scheme: dark;

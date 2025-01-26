@@ -90,11 +90,11 @@
 
 <script setup lang="ts">
 import { computed, getCurrentInstance, onBeforeUnmount, onMounted, reactive, ref } from 'vue'
-import { Notify, date } from 'quasar'
+import { date } from 'quasar'
 import { Countdown } from 'utils-where'
 import { globalEmitter, useUserStore } from '@/store'
 
-const { $t } = getCurrentInstance()!.appContext.config.globalProperties
+const { $t, notify } = getCurrentInstance()!.appContext.config.globalProperties
 const User = useUserStore()
 if (+User.custom.shutAt <= Date.now()) {
   User.custom.shutAt = ''
@@ -158,7 +158,7 @@ const formatTime = () => date.formatDate(User.custom.shutAt, 'YYYY-MM-DD HH:mm:s
 const cancel = () => {
   window.electronAPI.setShutdown(-1).then((err) => {
     if (err) {
-      Notify.create({
+      notify({
         type: 'warning',
         position: 'top',
         message: err.message
@@ -172,7 +172,7 @@ const cancel = () => {
 const start = () => {
   const leftSeconds = getLeftTime()
   if (leftSeconds <= 0) {
-    Notify.create({
+    notify({
       type: 'warning',
       message: '请设置有效定时'
     })
@@ -184,7 +184,7 @@ const start = () => {
       loading.value = false
     }, 1000)
     if (err) {
-      Notify.create({
+      notify({
         type: 'warning',
         position: 'top',
         message: err.message
@@ -222,7 +222,7 @@ const save = () => {
     })
     User.changeSetting('plans', plans)
   }
-  Notify.create({
+  notify({
     type: 'positive',
     message: $t('Home.保存成功')
   })
