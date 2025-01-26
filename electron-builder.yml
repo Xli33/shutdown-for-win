@@ -10,16 +10,18 @@ files:
   - out/**
   - resources/**
   - '!**/node_modules/**'
+  # - /node_modules/adm-zip/**
   # - '!**/.vscode/*'
   # - '!src/*'
   # - '!electron.vite.config.{js,ts,mjs,cjs}'
   # - '!{.eslintignore,.eslintrc.cjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}'
   # - '!{.env,.env.*,.npmrc,pnpm-lock.yaml}'
   # - '!{tsconfig.json,tsconfig.*.json}'
-# asar: false
+asar: false
 asarUnpack:
   - resources/**
-  - out/renderer/**
+  - out/**
+  - package.json
 # afterSign: build/notarize.js
 win:
   executableName: shutdown-for-win
@@ -50,6 +52,6 @@ linux:
 appImage:
   artifactName: ${name}-${version}.${ext}
 npmRebuild: false
-publish:
-  provider: generic
-  url: https://example.com/auto-updates
+# publish:
+#   provider: generic
+#   url: https://example.com/auto-updates
