@@ -5,9 +5,9 @@ on:
     tags:
       - v*.*.*
   workflow_dispatch:
-  
+
 # permissions:
-  # contents: write
+# contents: write
 
 jobs:
   release:
@@ -18,14 +18,14 @@ jobs:
         # ubuntu-latest, macos-latest,
         os: [windows-latest]
 
-    steps:          
+    steps:
       - name: Check out Git repository
         uses: actions/checkout@v4
-          
+
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           # cache: npm
 
       - name: Install Dependencies
@@ -41,8 +41,11 @@ jobs:
 
       - name: build-win
         if: matrix.os == 'windows-latest'
-        run: npm run build:win
-          
+        run: |
+          npm run build:win
+          npm run build:unpack
+          zip dist/app.zip dist/win-unpacked/resources/app -r -v
+
       - name: release
         uses: softprops/action-gh-release@v2
         with:
@@ -53,5 +56,5 @@ jobs:
           files: |
             dist/*.7z
             dist/*.zip
-        # env:
           # token: ${{ secrets.OWN_TOKEN }}
+        # env:
