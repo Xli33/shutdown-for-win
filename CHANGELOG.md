@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [0.0.3](https://github.com/Xli33/shutdown-for-win/compare/v0.0.2...v0.0.3) (2025-02-05)
+
+
+### Features
+
+* 完善检查更新失败时的提示信息 ([65bdf83](https://github.com/Xli33/shutdown-for-win/commit/65bdf83aeba4c033f5a80e9e59c3e0c41729ebfd))
+
 ## [0.0.2](https://github.com/Xli33/shutdown-for-win/compare/v0.0.1...v0.0.2) (2025-01-26)
 
 
