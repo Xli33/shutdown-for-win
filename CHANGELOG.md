@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [0.0.4](https://github.com/Xli33/shutdown-for-win/compare/v0.0.3...v0.0.4) (2025-07-04)
+
+
+### Features
+
+* 限制单例运行 ([073279f](https://github.com/Xli33/shutdown-for-win/commit/073279f2727cd13e6feb55deeb7e975e3441abe0))
+
 ## [0.0.3](https://github.com/Xli33/shutdown-for-win/compare/v0.0.2...v0.0.3) (2025-02-05)
 
 
