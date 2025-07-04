@@ -16,7 +16,7 @@ if (!gotTheLock) {
 } else {
   let win: BrowserWindow
 
-  app.on('second-instance', (event, commandLine, workingDirectory, additionalData) => {
+  app.on('second-instance', (/* event, commandLine, workingDirectory, additionalData */) => {
     // 输出从第二个实例中接收到的数据
     // console.log(additionalData)
 
