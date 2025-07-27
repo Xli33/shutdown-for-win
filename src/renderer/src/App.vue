@@ -184,70 +184,77 @@ const checkUpdate = () => {
                 `https://github.com/Xli33/shutdown-for-win/releases/download/v${json.version}/app.zip`
               )
                 .then(async (res) => {
-                  if (res.ok) {
-                    // 通过 content-length 得到总量
-                    const total = +res.headers.get('content-length')!
-                    const reader = res.clone().body!.getReader()
-                    let loaded = 0
-                    while (1) {
-                      const { value, done } = await reader.read()
-                      if (done) break
-                      // 每一次读取都累加起来
-                      loaded += value.length
-                      updateInfo({
-                        message: 'downloading...',
-                        caption: Math.floor((loaded / total) * 100) + '%'
-                      })
-                    }
-                    updateInfo({
-                      message: 'installing...'
+                  if (!res.ok) {
+                    updateInfo()
+                    notify({
+                      type: 'negative',
+                      caption: res.status + '',
+                      message: res.statusText
                     })
-                    window.electronAPI
-                      .updatePkg(
-                        await res.arrayBuffer()
-                        // new File(
-                        //   [await res.arrayBuffer()],
-                        //   res.headers.get('content-disposition')!.match('filename=(.+)')?.[1] ||
-                        //     'update.zip',
-                        //   {
-                        //     type: 'application/zip'
-                        //   }
-                        // )
-                      )
-                      .then(() => {
-                        updateInfo(
-                          {
-                            type: 'positive',
-                            spinner: false,
-                            message: '更新成功，重启后生效',
-                            caption: '',
-                            actions: [
-                              {
-                                label: '重启界面',
-                                color: '#fff',
-                                handler() {
-                                  location.reload()
-                                }
-                              },
-                              {
-                                label: '重启应用',
-                                color: '#fff',
-                                handler() {
-                                  window.electronAPI.restart()
-                                }
-                              }
-                            ]
-                          },
-                          true
-                        )
-                      })
-                      .catch((err) => {
-                        notify({
-                          type: 'warning',
-                          message: err
-                        })
-                      })
+                    return
                   }
+                  // 通过 content-length 得到总量
+                  const total = +res.headers.get('content-length')!
+                  const reader = res.clone().body!.getReader()
+                  let loaded = 0
+                  while (1) {
+                    const { value, done } = await reader.read()
+                    if (done) break
+                    // 每一次读取都累加起来
+                    loaded += value.length
+                    updateInfo({
+                      message: 'downloading...',
+                      caption: Math.floor((loaded / total) * 100) + '%'
+                    })
+                  }
+                  updateInfo({
+                    message: 'installing...'
+                  })
+                  window.electronAPI
+                    .updatePkg(
+                      await res.arrayBuffer()
+                      // new File(
+                      //   [await res.arrayBuffer()],
+                      //   res.headers.get('content-disposition')!.match('filename=(.+)')?.[1] ||
+                      //     'update.zip',
+                      //   {
+                      //     type: 'application/zip'
+                      //   }
+                      // )
+                    )
+                    .then(() => {
+                      updateInfo(
+                        {
+                          type: 'positive',
+                          spinner: false,
+                          message: '更新成功，重启后生效',
+                          caption: '',
+                          actions: [
+                            {
+                              label: '重启界面',
+                              color: '#fff',
+                              handler() {
+                                location.reload()
+                              }
+                            },
+                            {
+                              label: '重启应用',
+                              color: '#fff',
+                              handler() {
+                                window.electronAPI.restart()
+                              }
+                            }
+                          ]
+                        },
+                        true
+                      )
+                    })
+                    .catch((err) => {
+                      notify({
+                        type: 'warning',
+                        message: err
+                      })
+                    })
                 })
                 .catch((err) => {
                   updateInfo()
