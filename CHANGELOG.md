@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [0.0.5](https://github.com/Xli33/shutdown-for-win/compare/v0.0.4...v0.0.5) (2025-07-27)
+
+
+### Bug Fixes
+
+* 优化处理更新异常 ([ea067b8](https://github.com/Xli33/shutdown-for-win/commit/ea067b8c0d83307f94d509df81c4e6b94b63df58))
+
 ## [0.0.4](https://github.com/Xli33/shutdown-for-win/compare/v0.0.3...v0.0.4) (2025-07-04)
 
 
