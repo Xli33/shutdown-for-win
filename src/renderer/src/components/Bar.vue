@@ -2,18 +2,12 @@
   <q-bar v-if="exist" class="titlebar" :style="{ 'app-region': appRegion }">
     <q-icon :name="icon" />
     <q-space />
-    <div class="titlebar-window-action">
+    <!-- <div class="titlebar-window-action">
       <q-btn square flat icon="minimize" @click="minimize" />
-      <q-btn
-        v-if="hasMaximize"
-        :disable="!maximizable"
-        square
-        flat
-        :icon="isMaximized ? 'crop_16_9' : 'crop_square'"
-        @click="toggleMaximize"
-      />
+      <q-btn v-if="hasMaximize" :disable="!maximizable" square flat :icon="isMaximized ? 'crop_16_9' : 'crop_square'"
+        @click="toggleMaximize" />
       <q-btn square flat icon="close" class="titlebar-btn-close" @click="close" />
-    </div>
+    </div> -->
   </q-bar>
 </template>
 
@@ -44,32 +38,45 @@ defineProps({
   }
 })
 
-const isMaximized = ref(false),
-  appRegion = ref('drag')
+const appRegion = ref('drag')
+// isMaximized = ref(false)
 
-const minimize = () => {
-  window.electronAPI.minimize()
-}
+// const minimize = (e: Event) => {
+//   const btn = e.currentTarget as HTMLElement
+//   btn.style.pointerEvents = 'none';
+//   btn.style.display = 'none'
+//   // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+//   btn.offsetWidth
+//   btn.style.display = ''
+//   window.electronAPI.minimize()
+//   // btn.classList.remove('q-hoverable')
+//   // document.addEventListener('mousenter', () => {
+//   //   btn.classList.add('q-hoverable')
+//   // }, { once: true, capture: true })
+//   setTimeout(() => {
+//     btn.style.pointerEvents = '';
+//   });
+// }
 
 // const maximize = () => {
 //   window.electronAPI.maximize()
 // }
 
-const toggleMaximize = () => {
-  window.electronAPI.toggleMaximize()
-}
+// const toggleMaximize = () => {
+//   window.electronAPI.toggleMaximize()
+// }
 
-const close = () => {
-  window.close()
-}
+// const close = () => {
+//   window.close()
+// }
 
 onMounted(() => {
-  window.addEventListener('maximize', (e) => {
-    isMaximized.value = true
-  })
-  window.addEventListener('unmaximize', () => {
-    isMaximized.value = false
-  })
+  // window.addEventListener('maximize', (e) => {
+  //   isMaximized.value = true
+  // })
+  // window.addEventListener('unmaximize', () => {
+  //   isMaximized.value = false
+  // })
   // 任何会遮挡Bar的类modal出现后都应触发该事件，避免 app-region: drag 的元素始终响应原生拖拽，即便元素层级非顶层
   window.onModalChange = (hidden: boolean) => {
     appRegion.value = hidden ? 'drag' : 'none'
@@ -93,6 +100,7 @@ onMounted(() => {
         vertical-align: top;
       }
     }
+
     button&btn-close.q-btn:hover > .q-focus-helper {
       background-color: red;
       opacity: 1;

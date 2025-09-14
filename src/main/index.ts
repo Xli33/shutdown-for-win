@@ -34,8 +34,15 @@ if (!gotTheLock) {
       width: 600,
       height: 600,
       frame: false,
-      show: false,
+      titleBarStyle: 'hidden',
+      titleBarOverlay: {
+        color: 'rgba(0,0,0,0)',
+        symbolColor: '#fff'
+        // height: 32
+      },
+      // show: false,
       resizable: false,
+      // fullscreenable: false, // 禁用F11切换全屏
       maximizable: false, // 禁用最大化后，app-region: drag 的元素也会无法通过双击最大化。但若应用已经最大化，则依旧可以通过双击退出最大化
       backgroundMaterial: 'acrylic',
       // backgroundColor: '#1976d2',
@@ -50,10 +57,11 @@ if (!gotTheLock) {
         // sandbox: false
       }
     })
-
-    win.once('ready-to-show', () => {
-      win.show()
-    })
+    // 去除electron默认附加的菜单，对应功能的快捷键也自然不存在也不会生效了，使用win.setMenu(null)效果一致
+    win.removeMenu()
+    // win.once('ready-to-show', () => {
+    //   win.show()
+    // })
 
     // 加载 index.html
     // You can use `process.env.VITE_DEV_SERVER_URL` when the vite command is called `serve`
@@ -87,6 +95,8 @@ if (!gotTheLock) {
   // 和创建浏览器窗口的时候调用
   // 部分 API 在 ready 事件触发后才能使用。
   app.whenReady().then(() => {
+    // electron应用默认带有一些菜单，其中包括浏览器默认的F11-切换全屏，禁用该默认行为的方式之一是注册个空函数的全局快捷键
+    // globalShortcut.register('F11', () => {})
     createWindow()
 
     ipcMain.once('restart', () => {
