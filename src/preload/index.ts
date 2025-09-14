@@ -53,3 +53,7 @@ ipcRenderer.on('unmaximize', () => {
 window.addEventListener('DOMContentLoaded', () => {
   console.log(process)
 })
+// 禁用electron源自浏览器的默认行为：F11切换全屏
+// document.onkeydown = (e) => {
+//   if (e.key === 'F11') e.preventDefault()
+// }

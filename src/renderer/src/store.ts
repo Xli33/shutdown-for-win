@@ -36,8 +36,8 @@ export const useUserStore = defineStore('user', {
 export const useLangStore = defineStore('locale', {
   getters: {
     locale() {
-      const { custom } = useUserStore()
-      return custom.lang
+      // const { custom } = useUserStore()
+      return useUserStore().custom.lang
     }
   },
   actions: {
@@ -60,10 +60,10 @@ export const useLangStore = defineStore('locale', {
       const User = useUserStore()
       // Quasar因为默认显示en-US，故不重复引入其en-US语言，当参数为 undefined 时，Quasar.Lang 会设置成 en-US
       Lang.set(lang !== 'en-US' ? quasarMsg : (undefined as unknown as QuasarLanguage))
-      User.custom.lang = lang
+      // User.custom.lang = lang
+      User.changeSetting('lang', lang)
       i18n.global.locale.value = lang
       document.documentElement.lang = lang
-      User.changeSetting('lang', lang)
     },
     // 获取语言（支持国际化时开启）
     async loadLocale(lang: availLangs) {
