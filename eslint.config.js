@@ -22,7 +22,10 @@ export default defineConfigWithVueTs(
     'out/*',
     'resources/*',
     'src/renderer/*.*',
-    'src/renderer/public/*'
+    'src/renderer/public/*',
+    '.github/',
+    '.husky/',
+    '.vscode/'
   ]),
   pluginVue.configs['flat/essential'],
   vueTsConfigs.recommended,
