@@ -7,7 +7,7 @@
 ### Features
 
 * 改为尽早显示，并改用原生窗口控制按钮，去除electron默认附加的菜单快捷键 ([f182bbf](https://github.com/Xli33/shutdown-for-win/commit/f182bbf6ed487b04af1d66135454d808087500eb))
-* 启用acrylic窗口背景 ([5e23a72](https://github.com/Xli33/shutdown-for-win/commit/5e23a7265e142edd918962082fa6006fe4e376f5))
+* ~~启用acrylic窗口背景 ([5e23a72](https://github.com/Xli33/shutdown-for-win/commit/5e23a7265e142edd918962082fa6006fe4e376f5))~~
 * 优化主题切换过渡 ([3c8349b](https://github.com/Xli33/shutdown-for-win/commit/3c8349b41691733047938f626edb09878758ed8b))
 
 ## [0.0.5](https://github.com/Xli33/shutdown-for-win/compare/v0.0.4...v0.0.5) (2025-07-27)
