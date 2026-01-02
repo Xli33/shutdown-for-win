@@ -1,10 +1,12 @@
 # shutdown for win
 
-auto-shutdown for win based on electron 37+, within chromium 138+
+auto-shutdown for win based on electron 39+
 
-<img src=demo.webp width=300>
+<img src=demo.webp width=300>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src=demo2.webp width=300>
 
 - ts 5+
+- electron 39, within chromium 142
 - electron-vite
 - Quasar v2(material design)
 - Vue 3
