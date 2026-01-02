@@ -2,54 +2,22 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <!-- <meta name="renderer" content="webkit" />
-    <meta name="force-rendering" content="webkit" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" /> -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com/ajax/libs/vue/; style-src 'self' 'unsafe-inline'; media-src 'self' 'unsafe-inline'; connect-src 'self' https://raw.githubusercontent.com/Xli33/ https://github.com/Xli33/ https://objects.githubusercontent.com;"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net/npm/vue@3.5.26/dist/; style-src 'self' 'unsafe-inline'; media-src 'self' 'unsafe-inline'; connect-src 'self' https://raw.githubusercontent.com/Xli33/ https://github.com/Xli33/ https://objects.githubusercontent.com;"
     />
     <!-- <link rel="icon" href="/favicon.ico" /> -->
     <title>shutdown for win</title>
-    <link href="backup/Material.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="backup/quasar.2.18.2.css" />
+    <link href="cdn/Material.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="cdn/quasar.2.18.6.css" />
     <script
-      src="<%= process.env.NODE_ENV === 'production' ? 'backup/vue.3.5.21' : 'https://cdnjs.cloudflare.com/ajax/libs/vue/3.5.21/vue.runtime.global.min' %>.js"
+      src="<%= process.env.NODE_ENV === 'production' ? 'cdn/vue.3.5.26' : 'https://cdn.jsdelivr.net/npm/vue@3.5.26/dist/vue.runtime.global' %>.js"
       referrerpolicy="no-referrer"
     ></script>
-    <script src="backup/vue-router.4.5.1.js" referrerpolicy="no-referrer"></script>
+    <script src="cdn/vue-router.4.6.4.js" referrerpolicy="no-referrer"></script>
     <script>
-      // ;(() => {
-      //   const doc = document,
-      //     path = 'backup/',
-      //     links = [
-      //       ['link-mdi', 'Material.css'],
-      //       ['link-quasar', 'quasar.2.18.2.css']
-      //     ],
-      //     genLink = (name) => {
-      //       const link = doc.createElement('link')
-      //       link.href = path + name
-      //       link.rel = 'stylesheet'
-      //       doc.head.appendChild(link)
-      //     }
-      //   links.forEach((e) => {
-      //     const el = doc.getElementById(e[0])
-      //     el.onload = () => {
-      //       el.onerror = null
-      //     }
-      //     el.onerror = () => {
-      //       genLink(e[1])
-      //     }
-      //   })
-      //   ;[
-      //     ['Vue', 'vue.3.5.17'],
-      //     ['VueRouter', 'vue-router.4.5.1']
-      //   ].forEach((e) => {
-      //     !window[e[0]] && document.write('<script src="' + path + e[1] + '.js"><\/script>')
-      //   })
-      // })()
       ;(() => {
         const arr = location.hash.match(/\w+=[^&]*/g)
         ver = navigator.appVersion.match(/shutdown-for-win\/([\d\.]+)/)[1]
@@ -74,10 +42,7 @@
     <script>
       window.electronAPI && document.body.classList.add('electron')
     </script>
-    <script src="backup/quasar.2.18.2.js"></script>
-    <!-- <script>
-      !window.Quasar && document.write('<script src="backup/quasar.2.17.7.js"><\/script>')
-    </script> -->
+    <script src="cdn/quasar.2.18.6.js"></script>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
