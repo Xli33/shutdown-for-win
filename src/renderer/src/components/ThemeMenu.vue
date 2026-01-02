@@ -50,7 +50,17 @@ import { useUserStore } from '@/store'
 const { custom, changeSetting } = useUserStore()
 
 const changeTheme = (type: boolean | 'auto') => {
-  Dark.set(type)
   changeSetting('theme', type)
+  const matchDark = (Dark as Obj).__media ?? window.matchMedia('(prefers-color-scheme:dark)')
+  const isAuto = type === 'auto'
+  // 仅在实际需要切换主题时才触发view transition
+  if (
+    (Dark.isActive && (!type || (isAuto && !matchDark.matches))) ||
+    (!Dark.isActive && (type === true || (isAuto && matchDark.matches)))
+  ) {
+    document.startViewTransition(() => {
+      Dark.set(type)
+    })
+  }
 }
 </script>

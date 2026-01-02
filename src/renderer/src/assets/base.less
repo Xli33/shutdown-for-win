@@ -13,6 +13,41 @@
   }
 }
 
+// 主题切换过渡动画
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.6s;
+  animation-timing-function: ease-out;
+  mix-blend-mode: normal;
+}
+
+::view-transition-new(root) {
+  animation-name: theme-expand;
+}
+
+// ::view-transition-old(root) {
+//   animation-name: theme-shrink;
+//   z-index: -1;
+// }
+
+@keyframes theme-expand {
+  from {
+    clip-path: circle(0% at 50% 50%);
+  }
+  to {
+    clip-path: circle(100% at 50% 50%);
+  }
+}
+
+// @keyframes theme-shrink {
+//   from {
+//     clip-path: circle(150% at 50% 50%);
+//   }
+//   to {
+//     clip-path: circle(0% at 50% 50%);
+//   }
+// }
+
 body {
   &.body--dark {
     color-scheme: dark;
