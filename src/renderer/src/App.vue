@@ -79,7 +79,7 @@
 </template>
 
 <script setup lang="ts">
-import { getCurrentInstance, onMounted, ref, watch } from 'vue'
+import { getCurrentInstance, onMounted, ref } from 'vue'
 import { Dark } from 'quasar'
 import { globalEmitter, useUserStore } from './store'
 import { useLangStore } from './store'
@@ -133,8 +133,8 @@ const compareVerion = (left: string, right: string) => {
   }
   console.log(leftVer.join('.'), rightVer.join('.'))
   for (let i = 0, len = leftVer.length; i < len; i++) {
-    if (+leftVer[i] > +rightVer[i]) return 1
-    if (+leftVer[i] < +rightVer[i]) return -1
+    if (+leftVer[i]! > +rightVer[i]!) return 1
+    if (+leftVer[i]! < +rightVer[i]!) return -1
   }
   // 进入到这表示版本号相同
   return 0
@@ -278,12 +278,12 @@ const checkUpdate = () => {
     })
 }
 
-watch(
-  () => Dark.isActive,
-  (val) => {
-    document.documentElement.classList[val ? 'add' : 'remove']('dark')
-  }
-)
+// watch(
+//   () => Dark.isActive,
+//   (val) => {
+//     document.documentElement.classList[val ? 'add' : 'remove']('dark')
+//   }
+// )
 
 onMounted(() => {
   document.onclick = (e) => {

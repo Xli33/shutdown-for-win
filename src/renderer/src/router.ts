@@ -11,7 +11,7 @@ const router = createRouter({
 // 已设置的语言（支持国际化时开启）
 // let settedLocale = 'zh-CN'
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(() => {
   LoadingBar.start()
 
   // 设置语言（支持国际化时开启）
@@ -19,8 +19,10 @@ router.beforeEach((to, from, next) => {
   //   await useLangStore().setLocale(<'zh-CN'>to.query.lang)
   //   settedLocale = <string>to.query.lang
   // }
+  // next()
+})
 
-  next()
+router.afterEach(() => {
   LoadingBar.stop()
 })
 

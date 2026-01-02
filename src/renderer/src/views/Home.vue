@@ -110,7 +110,7 @@ const types = reactive([
       value: 'hms'
     }
   ]),
-  type = ref(types[0])
+  type = ref(types[0]!)
 const shutAt = ref(date.formatDate(User.custom.shutAt || new Date(), 'YYYY-MM-DD HH:mm:ss'))
 const timer = reactive({
     hour: 0,
@@ -230,7 +230,7 @@ const save = () => {
 
 onMounted(() => {
   globalEmitter.on('setShutTime', (item: (typeof User.custom.plans)[number]) => {
-    type.value = types[item.type]
+    type.value = types[item.type]!
     if (item.type === 0) {
       let tmp = date.buildDate({
         hour: item.h,
