@@ -1,4 +1,4 @@
-import { defineConfig, defineViteConfig, externalizeDepsPlugin } from 'electron-vite'
+import { defineConfig } from 'electron-vite'
 // import { resolve } from 'path'
 import viteConfig from './vite.config'
 import type { ESBuildOptions } from 'vite'
@@ -8,56 +8,44 @@ const isProd = process.env.NODE_ENV === 'production',
     drop: isProd ? ['console', 'debugger'] : [] // 删除所有的console 和 debugger
   }
 
-export default defineConfig({
-  main: {
-    // plugins: [externalizeDepsPlugin()],
-    build: {
-      minify: isProd,
-      rollupOptions: {
-        // input: {
-        //   index: resolve(__dirname, 'electron/main.ts')
-        // }
-        output: {
-          // format: 'es'
-          manualChunks(id): string | void {
-            if (id.includes('adm-zip')) {
-              return 'adm-zip'
+export default defineConfig(({ command, mode, isSsrBuild, isPreview }) => {
+  return {
+    main: {
+      build: {
+        minify: isProd,
+        rollupOptions: {
+          // input: {
+          //   index: resolve(__dirname, 'electron/main.ts')
+          // }
+          output: {
+            // format: 'es'
+            manualChunks(id): string | void {
+              if (id.includes('adm-zip')) {
+                return 'adm-zip'
+              }
             }
           }
         }
-      }
-      // outDir: 'dist/main'
+        // outDir: 'dist/main'
+      },
+      esbuild
     },
-    esbuild
-  },
-  preload: {
-    plugins: [externalizeDepsPlugin()],
-    build: {
-      minify: isProd,
-      rollupOptions: {
-        // input: {
-        //   index: resolve(__dirname, 'electron/preload.ts')
-        // },
-        output: {
-          format: 'cjs'
+    preload: {
+      plugins: [],
+      build: {
+        minify: isProd,
+        rollupOptions: {
+          // input: {
+          //   index: resolve(__dirname, 'electron/preload.ts')
+          // },
+          output: {
+            format: 'cjs'
+          }
         }
-      }
-      // outDir: 'dist/preload'
+        // outDir: 'dist/preload'
+      },
+      esbuild
     },
-    esbuild
-  },
-  renderer: defineViteConfig((arg) => {
-    return viteConfig(arg)
-    // return Object.assign({}, viteConfig, {
-    //   root: '.',
-    //   build: {
-    //     rollupOptions: {
-    //       input: {
-    //         index: resolve(__dirname, 'index.html')
-    //       }
-    //     }
-    //     // outDir: 'dist/renderer'
-    //   }
-    // })
-  })
+    renderer: viteConfig({ command, mode, isSsrBuild, isPreview })
+  }
 })
