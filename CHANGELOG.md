@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [0.0.7](https://github.com/Xli33/shutdown-for-win/compare/v0.0.6...v0.0.7) (2026-01-02)
+
+
+### Bug Fixes
+
+* **index.html:** 适配更新下载地址 ([14ca7d0](https://github.com/Xli33/shutdown-for-win/commit/14ca7d0a011596484279f22b1a07ef798cab2d7b))
+
 ## [0.0.6](https://github.com/Xli33/shutdown-for-win/compare/v0.0.5...v0.0.6) (2026-01-02)
 
 
