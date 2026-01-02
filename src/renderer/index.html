@@ -15,9 +15,16 @@
     <script
       src="<%= process.env.NODE_ENV === 'production' ? 'cdn/vue.3.5.26' : 'https://cdn.jsdelivr.net/npm/vue@3.5.26/dist/vue.runtime.global' %>.js"
       referrerpolicy="no-referrer"
+      <%= process.env.NODE_ENV === 'development' ? '' : 'defer' %>
     ></script>
-    <script src="cdn/vue-router.4.6.4.js" referrerpolicy="no-referrer"></script>
+    <script src="cdn/vue-router.4.6.4.js" defer></script>
+    <script src="cdn/quasar.2.18.6.js" defer></script>
+  </head>
+
+  <body>
+    <div id="app"></div>
     <script>
+      window.electronAPI && document.body.classList.add('electron')
       ;(() => {
         const arr = location.hash.match(/\w+=[^&]*/g)
         ver = navigator.appVersion.match(/shutdown-for-win\/([\d\.]+)/)[1]
@@ -35,14 +42,6 @@
         }
       })()
     </script>
-  </head>
-
-  <body>
-    <div id="app"></div>
-    <script>
-      window.electronAPI && document.body.classList.add('electron')
-    </script>
-    <script src="cdn/quasar.2.18.6.js"></script>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
