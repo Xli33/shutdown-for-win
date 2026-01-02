@@ -1,7 +1,8 @@
 import { defineConfig } from 'electron-vite'
 // import { resolve } from 'path'
-import viteConfig from './vite.config'
 import type { ESBuildOptions } from 'vite'
+import { transformSync } from 'esbuild'
+import viteConfig from './vite.config'
 
 const isProd = process.env.NODE_ENV === 'production',
   esbuild: ESBuildOptions = {
@@ -11,18 +12,32 @@ const isProd = process.env.NODE_ENV === 'production',
 export default defineConfig(({ command, mode, isSsrBuild, isPreview }) => {
   return {
     main: {
+      plugins: [
+        isProd && {
+          name: 'adm-zip',
+          renderChunk(code, chunk) {
+            if (chunk.name === 'adm-zip')
+              return transformSync(code, {
+                minify: true,
+                target: 'esnext'
+                // drop: esbuild.drop
+              }).code
+          }
+        }
+      ],
       build: {
         minify: isProd,
+        externalizeDeps: {
+          exclude: isProd ? ['adm-zip'] : []
+        },
         rollupOptions: {
           // input: {
           //   index: resolve(__dirname, 'electron/main.ts')
           // }
           output: {
             // format: 'es'
-            manualChunks(id): string | void {
-              if (id.includes('adm-zip')) {
-                return 'adm-zip'
-              }
+            manualChunks(id) {
+              if (id.includes('/node_modules/adm-zip/')) return 'adm-zip'
             }
           }
         }
@@ -31,7 +46,7 @@ export default defineConfig(({ command, mode, isSsrBuild, isPreview }) => {
       esbuild
     },
     preload: {
-      plugins: [],
+      // plugins: [],
       build: {
         minify: isProd,
         rollupOptions: {
