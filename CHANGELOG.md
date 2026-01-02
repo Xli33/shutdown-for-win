@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [0.0.8](https://github.com/Xli33/shutdown-for-win/compare/v0.0.7...v0.0.8) (2026-01-02)
+
+
+### Bug Fixes
+
+* **electron.vite.config:** 修复打包后运行报错&优化主线程构建配置 ([a7a4ff0](https://github.com/Xli33/shutdown-for-win/commit/a7a4ff09c2182a5c099e9a0b4420343649001a7b))
+
 ## [0.0.7](https://github.com/Xli33/shutdown-for-win/compare/v0.0.6...v0.0.7) (2026-01-02)
 
 
