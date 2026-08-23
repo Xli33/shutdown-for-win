@@ -59,7 +59,7 @@ export const useLangStore = defineStore('locale', {
     changeLocale(lang: availLangs, quasarMsg: QuasarLanguage) {
       const User = useUserStore()
       // Quasar因为默认显示en-US，故不重复引入其en-US语言，当参数为 undefined 时，Quasar.Lang 会设置成 en-US
-      Lang.set(lang !== 'en-US' ? quasarMsg : (undefined as unknown as QuasarLanguage))
+      Lang.set(lang !== 'en-US' ? quasarMsg : (undefined as any))
       // User.custom.lang = lang
       User.changeSetting('lang', lang)
       i18n.global.locale.value = lang

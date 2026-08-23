@@ -2,8 +2,9 @@
 /// <reference types="electron-vite/node" />
 
 declare module '@yellowspot/vite-plugin-externals' {
-  import type { PluginOption } from 'vite'
-  export default function (param: Obj): PluginOption
+  // import type {  PluginOption } from 'vite'
+  // 使用Vite中的插件类型会导致TS产生堆栈深度过高错误，故直接断言为any避免ts死循环
+  export default function (param: Obj): any
 }
 
 declare interface Window {

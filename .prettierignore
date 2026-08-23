@@ -1,0 +1,8 @@
+.vscode/*
+
+src/renderer/public/
+src/renderer/index.html
+CHANGELOG.md
+
+# 打包产物与模板
+docs/

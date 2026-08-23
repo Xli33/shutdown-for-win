@@ -1,66 +1,75 @@
 import { defineConfig } from 'electron-vite'
 // import { resolve } from 'path'
-import type { ESBuildOptions } from 'vite'
-import { transformSync } from 'esbuild'
+// import { minifySync, type ESBuildOptions } from 'vite'
+// import { transformSync } from 'esbuild'
 import viteConfig from './vite.config'
 
-const isProd = process.env.NODE_ENV === 'production',
-  esbuild: ESBuildOptions = {
-    drop: isProd ? ['console', 'debugger'] : [] // 删除所有的console 和 debugger
+const isBuild = process.env.NODE_ENV === 'production',
+  minify = isBuild && {
+    mangle: true,
+    compress: {
+      dropConsole: true,
+      dropDebugger: true
+    }
   }
 
 export default defineConfig(({ command, mode, isSsrBuild, isPreview }) => {
   return {
     main: {
       plugins: [
-        isProd && {
-          name: 'adm-zip',
-          renderChunk(code, chunk) {
-            if (chunk.name === 'adm-zip')
-              return transformSync(code, {
-                minify: true,
-                target: 'esnext'
-                // drop: esbuild.drop
-              }).code
-          }
-        }
+        // isBuild && {
+        //   name: 'adm-zip',
+        //   renderChunk(code, chunk) {
+        //     if (chunk.name === 'adm-zip')
+        //       return minifySync(chunk.fileName, code, {
+        //         compress: (minify as Obj).compress,
+        //         mangle: true,
+        //         module: true
+        //       }).code
+        //   }
+        // }
       ],
       build: {
-        minify: isProd,
+        minify: isBuild,
         externalizeDeps: {
-          exclude: isProd ? ['adm-zip'] : []
+          exclude: isBuild ? ['adm-zip'] : []
         },
-        rollupOptions: {
+        rolldownOptions: {
           // input: {
           //   index: resolve(__dirname, 'electron/main.ts')
           // }
           output: {
             // format: 'es'
-            manualChunks(id) {
-              if (id.includes('/node_modules/adm-zip/')) return 'adm-zip'
+            minify,
+            codeSplitting: {
+              groups: [
+                {
+                  test: (id) => id.includes('/node_modules/adm-zip/'),
+                  name: 'adm-zip'
+                }
+              ]
             }
           }
         }
         // outDir: 'dist/main'
-      },
-      esbuild
+      }
     },
     preload: {
       // plugins: [],
       build: {
-        minify: isProd,
-        rollupOptions: {
+        minify: isBuild,
+        rolldownOptions: {
           // input: {
           //   index: resolve(__dirname, 'electron/preload.ts')
           // },
           output: {
+            minify,
             format: 'cjs'
           }
         }
         // outDir: 'dist/preload'
-      },
-      esbuild
+      }
     },
-    renderer: viteConfig({ command, mode, isSsrBuild, isPreview })
+    renderer: viteConfig({ command, mode, isSsrBuild, isPreview }) as any
   }
 })

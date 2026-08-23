@@ -25,7 +25,6 @@ export default defineConfig(({ command, mode, isSsrBuild, isPreview }) => {
           'vue-router': 'VueRouter',
           quasar: 'Quasar'
         }),
-      // splitVendorChunkPlugin(),
       html({
         minify: isBuild && {
           removeComments: true, // 删除注释
@@ -73,26 +72,36 @@ export default defineConfig(({ command, mode, isSsrBuild, isPreview }) => {
       // modulePreload: {
       //   polyfill: false
       // },
-      rollupOptions: {
+      rolldownOptions: {
         output: {
-          manualChunks(id) {
-            if (id.includes('node_modules')) {
-              return 'vendor'
+          minify: isBuild && {
+            compress: {
+              dropConsole: true,
+              dropDebugger: true
             }
+          },
+          codeSplitting: {
+            groups: [
+              {
+                // minShareCount: 2,
+                test: /\/node_modules\//,
+                name: 'vendor',
+                priority: 10
+              }
+            ]
           }
+          // manualChunks(id) {
+          //   if (id.includes('node_modules')) {
+          //     return 'vendor'
+          //   }
+          // }
         }
       }
-    },
-    esbuild: {
-      drop: isBuild ? ['console', 'debugger'] : [] // 删除所有的console 和 debugger
-      // include: ['ts', 'jsx', 'tsx', 'js'],
-      // exclude: []
-      // target: 'esnext'
-    },
-    optimizeDeps: {
-      esbuildOptions: {
-        target: 'esnext'
-      }
     }
+    // optimizeDeps: {
+    //   esbuildOptions: {
+    //     target: 'esnext'
+    //   }
+    // }
   }
 })
