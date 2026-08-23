@@ -86,6 +86,7 @@ onMounted(() => {
 
 <style lang="less">
 .titlebar {
+  height: env(titlebar-area-height);
   padding-right: 0;
   user-select: none;
 

@@ -33,6 +33,8 @@ if (!gotTheLock) {
     win = new BrowserWindow({
       width: 600,
       height: 600,
+      minWidth: 600,
+      minHeight: 600,
       frame: false,
       titleBarStyle: 'hidden',
       titleBarOverlay: {
@@ -41,9 +43,9 @@ if (!gotTheLock) {
         // height: 32
       },
       // show: false,
-      resizable: false,
+      // resizable: false,
       // fullscreenable: false, // 禁用F11切换全屏
-      maximizable: false, // 禁用最大化后，app-region: drag 的元素也会无法通过双击最大化。但若应用已经最大化，则依旧可以通过双击退出最大化
+      // maximizable: false, // 禁用最大化后，app-region: drag 的元素也会无法通过双击最大化。但若应用已经最大化，则依旧可以通过双击退出最大化
       // backgroundMaterial: 'acrylic',
       // backgroundColor: '#1976d2',
       // type: 'toolbar',
